@@ -17,7 +17,7 @@ The following diagram illustrates the complete end-to-end data flow of **FinLens
                                           v
 +-----------------------------------------------------------------------------------+
 |                                 FASTAPI BACKEND                                   |
-|  - JWT Middleware Token Validation      - Endpoint Routing & Parsing             |
+|  - JWT Middleware Token Validation      - Endpoint Routing & Parsing              |
 |  - Supabase DB Client Integration      - Error Handling & Payload Structuring     |
 +-------------------+-----------------------------------+---------------------------+
                     |                                   |
@@ -26,10 +26,10 @@ The following diagram illustrates the complete end-to-end data flow of **FinLens
                     v                                   v
 +-----------------------+           +-----------------------------------------------+
 |     SUPABASE DB       |           |                AI & AGENT WORKFLOW            |
-| - Users & Auth Tokens |           | 1. Fine-Tuned LLM (gpt-4o-mini)               |
+| - Users & Auth Tokens |           | 1. Fine-Tuned LLM (llama-3.1-8b-instant)      |
 | - Invoices & Logs     |           |    -> Evaluates Document Risk Score & Flags   |
 +-----------------------+           | 2. RAG Engine (LangChain + ChromaDB)          |
-                                    |    -> Queries Tax Policy Vector Store        |
+                                    |    -> Queries Tax Policy Vector Store         |
                                     | 3. MCP Server (Anthropic SDK)                 |
                                     |    -> Executes Tax Refund & Calculation Tools |
                                     +-----------------------------------------------+
