@@ -2,7 +2,7 @@ import os
 import json
 import warnings
 warnings.filterwarnings("ignore", category=DeprecationWarning)
-
+import sys
 from dotenv import load_dotenv
 from groq import Groq
 from langchain_chroma import Chroma
@@ -75,6 +75,24 @@ Return ONLY raw JSON formatted exactly as:
 
 # Local Test Execution
 if __name__ == "__main__":
-    test_receipt = "Invoice: Vendor #902, Total: $500.00, Tax: $150.00 (30%), Payment: Cash."
-    print("Running local test...")
-    print(json.dumps(process_document(test_receipt), indent=2))
+    # Check if text was passed from Node.js process via sys.argv
+    if len(sys.argv) > 1:
+        extracted_text = sys.argv[1]
+    else:
+        # Fallback test string for manual terminal testing
+        extracted_text = "Invoice: Vendor #902, Total: $1500.00, Tax: $450.00 (30%), Payment: Cash."
+
+    # Run the full RAG + Groq analysis
+    ai_results = process_document(extracted_text)
+
+    # Format the dictionary to match Supabase database expectations
+    response_payload = {
+        "risk_score": ai_results.get("risk_score", 0),
+        "risk_level": "HIGH" if ai_results.get("risk_score", 0) > 70 else "LOW",
+        "audit_flags": ai_results.get("audit_flags", []),
+        "total_amount": ai_results.get("total_amount", 0.0),
+        "mcp_refund": ai_results.get("mcp_refund", 0.0)
+    }
+
+    # Print raw JSON string to stdout (read by Node's stdout stream)
+    print(json.dumps(response_payload))
