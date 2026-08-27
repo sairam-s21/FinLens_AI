@@ -5,7 +5,7 @@ Required keys across services:
 - SUPABASE_URL=your_supabase_url
 - SUPABASE_ANON_KEY=your_supabase_anon_key
 - SUPABASE_JWT_SECRET=your_jwt_secret
-- OPENAI_API_KEY=your_openai_key
+- GROQ_API_KEY=your_groq_key
 
 ## 2. Authentication Header
 All requests from Frontend to Backend MUST include:
